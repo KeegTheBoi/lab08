@@ -1,0 +1,105 @@
+java.util.NoSuchElementException: next on empty iterator
+occurred in the presentation compiler.
+
+action parameters:
+offset: 2542
+uri: file:///C:/Users/keegancarlo.falcao/lab08/83-tdd-deathnote/src/test/java/it/unibo/deathnote/TestDeathNote.java
+text:
+package it.unibo.deathnote;
+
+import org.junit.jupiter.api.Test;
+
+import it.unibo.deathnote.Impl.DeathNoteImpl;
+import it.unibo.deathnote.api.DeathNote;
+
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Assertions;
+
+class TestDeathNote {
+    private DeathNote note;
+    private final static String EMPTY_STRING = "";
+     /**
+    * Configuration step: this is performed BEFORE each test.
+    */
+   @BeforeEach
+   public void setUp() {
+        note = new DeathNoteImpl();
+   }
+
+    /**
+     * check that the exceptions are thrown correctly, that their type is the expected one, and that the message is not null, empty, or blank.
+     */
+    @Test
+    public void testExceptionAndMessages() {
+        try {
+            note.getRule(-4);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("arguments out of bounds", e.getMessage());
+            assertNotNull(e.getMessage());
+            assertFalse(e.getMessage().isEmpty());
+            assertFalse(e.getMessage().isBlank());
+        }
+    }
+
+    
+    /**
+     * for all the valid rules, check that none is null or blank
+     */
+    @Test
+    public void testRules(){
+        String resString = note.getRule(5);
+        assertNotNull(resString);
+        assertFalse(resString.isEmpty());
+        assertFalse(resString.isBlank());
+    }
+
+    /**
+     *  The human whose name is written in the DeathNote will eventually die.
+     */
+    @Test
+    public void testWiteDeathNote(){
+        String humanName = "Mary Jane";
+        //verify that the human has not been written in the notebook yet
+        assertFalse(note.isNameWritten(humanName));
+        //write the human in the notebook
+        note.writeName(humanName);
+        //verify that the human has been written in the notebook
+        assertTrue(note.isNameWritten(humanName));
+        String anotherHuman = "Jamal";
+        //verify that another human has not been written in the notebook
+        assertFalse(note.isNameWritten(anotherHuman));
+        //verify that the empty string has not been written in the notebook
+        assertFalse(note.isNameWritten(EMPTY_STRING));
+
+    }
+
+    /**
+     *  @@The human whose name is written in the DeathNote will eventually die.
+     */
+    @Test
+    public void testWiteDeathNote(){
+
+
+
+}
+
+
+error stacktrace:
+scala.collection.Iterator$$anon$19.next(Iterator.scala:973)
+	scala.collection.Iterator$$anon$19.next(Iterator.scala:971)
+	scala.collection.mutable.MutationTracker$CheckedIterator.next(MutationTracker.scala:76)
+	scala.collection.IterableOps.head(Iterable.scala:222)
+	scala.collection.IterableOps.head$(Iterable.scala:222)
+	scala.collection.AbstractIterable.head(Iterable.scala:933)
+	dotty.tools.dotc.interactive.InteractiveDriver.run(InteractiveDriver.scala:168)
+	scala.meta.internal.pc.MetalsDriver.run(MetalsDriver.scala:45)
+	scala.meta.internal.pc.HoverProvider$.hover(HoverProvider.scala:34)
+	scala.meta.internal.pc.ScalaPresentationCompiler.hover$$anonfun$1(ScalaPresentationCompiler.scala:325)
