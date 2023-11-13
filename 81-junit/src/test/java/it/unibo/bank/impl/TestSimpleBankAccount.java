@@ -2,6 +2,11 @@ package it.unibo.bank.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.beans.ExceptionListener;
+
 import org.junit.jupiter.api.Assertions;
 import it.unibo.bank.api.AccountHolder;
 import it.unibo.bank.api.BankAccount;
@@ -44,6 +49,7 @@ public class TestSimpleBankAccount {
         }
         Assertions.assertEquals(expectedValue, bankAccount.getBalance());
         Assertions.assertTrue(bankAccount.getTransactionsCount() > 0);
+        
     }
 
     /**
@@ -55,7 +61,7 @@ public class TestSimpleBankAccount {
             bankAccount.deposit(aBianchi.getUserID(), 10000);
             Assertions.fail();
         } catch (IllegalArgumentException e) {
-            Assertions.assertEquals("ID not corresponding: cannot perform transaction.", e.getMessage());
+            Assertions.assertEquals("ID not corresponding: cannot perform transaction", e.getMessage());
         }
         // Alternative (with reflection): Assertions.assertThrows
     }
