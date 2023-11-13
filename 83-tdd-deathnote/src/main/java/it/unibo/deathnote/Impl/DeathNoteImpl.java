@@ -9,8 +9,18 @@ import it.unibo.deathnote.api.DeathNote;
 
 public class DeathNoteImpl implements DeathNote {
 
-    private List<String> noteBook;
-    private Map<String, String> deathCauses;
+    private final static long TIME_LIMIT_FOR_CAUSES = 40;
+    private final static long TIME_LIMIT_FOR_DETAILS = 6040;
+
+    private final List<String> noteBook;
+    private final Map<String, String> deathCauses;
+    private final Map<String, String> deathDetails;
+    private long time;
+    private String currentDeathName;
+
+    public String getCurrentDeathName() {
+        return currentDeathName;
+    }
 
     public List<String> getNoteBook() {
         return List.copyOf(noteBook);
@@ -19,6 +29,7 @@ public class DeathNoteImpl implements DeathNote {
     public DeathNoteImpl(){
         noteBook = new ArrayList<>();
         deathCauses = new HashMap<>();
+        deathDetails = new HashMap<>();
     }
 
     @Override
@@ -36,37 +47,69 @@ public class DeathNoteImpl implements DeathNote {
         }
         if(!name.isEmpty()){
             this.noteBook.add(name);
+            currentDeathName = name;
+            this.deathCauses.putIfAbsent(name, "heart attack"); //default death cause
+            this.deathDetails.putIfAbsent(name, ""); //set default death details
+            this.calculateWritingTime();
         }
 
+    }
+
+    private void calculateWritingTime(){
+        time = System.currentTimeMillis();
+    }
+
+    private long dimeDiff(){
+        return System.currentTimeMillis() - time;
     }
 
     @Override
     public boolean writeDeathCause(String cause) {
-        if(noteBook.isEmpty()){
+        if(noteBook.isEmpty() || cause == null){
             throw new IllegalStateException("should write name first");
         }
-        this.deathCauses.put(this.noteBook.get(noteBook.size() - 1), cause);
-        return true;
+        if(dimeDiff() < TIME_LIMIT_FOR_CAUSES){
+            this.deathCauses.put(currentDeathName, cause);
+            return true;
+        }
+        return false;
+       
     }
 
     @Override
     public boolean writeDetails(String details) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'writeDetails'");
+        if(noteBook.isEmpty() || details == null){
+            throw new IllegalStateException("should write name first");
+        }
+        long diff = dimeDiff();
+        if(diff < TIME_LIMIT_FOR_DETAILS){
+            this.deathDetails.put(currentDeathName, details);
+            return true;
+        }
+        return false;
+        
     }
 
     @Override
     public String getDeathCause(String name) {
-        if(name != null){
-            return deathCauses.get(name);
+        if(!this.deathCauses.containsKey(name)){
+            throw new IllegalArgumentException("couldn't find any death cause associated to th given name");
         }
-        throw new NullPointerException("name cant be null");
+        if(name != null){
+            return this.deathCauses.get(name);
+        }
+        throw new NullPointerException("name cant be null or blank");
     }
 
     @Override
     public String getDeathDetails(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDeathDetails'");
+        if(!this.deathCauses.containsKey(name)){
+            throw new IllegalArgumentException("couldn't find any death cause associated to th given name");
+        }
+        if(name != null ){
+            return this.deathDetails.get(name);
+        }
+        throw new NullPointerException("name cant be null or blank");
     }
 
     @Override
