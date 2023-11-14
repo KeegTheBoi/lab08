@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 class TestDeathNote {
     private DeathNote note;
     private final static String EMPTY_STRING = "";
-    private final String humanName = "Mary Jane";
-    private final String anotherHuman = "Jamal";
+    private final static String humanName = "Mary Jane";
+    private final static String anotherHuman = "Jamal";
      /**
     * Configuration step: this is performed BEFORE each test.
     */
@@ -67,15 +67,15 @@ class TestDeathNote {
     @Test
     public void testWiteDeathNote(){
         //verify that the human has not been written in the notebook yet
-        assertFalse(note.isNameWritten(humanName));
+        assertFalse(note.isNameWritten(TestDeathNote.humanName));
         //write the human in the notebook
-        note.writeName(humanName);
+        note.writeName(TestDeathNote.humanName);
         //verify that the human has been written in the notebook
-        assertTrue(note.isNameWritten(humanName));
+        assertTrue(note.isNameWritten(TestDeathNote.humanName));
         //verify that another human has not been written in the notebook
-        assertFalse(note.isNameWritten(anotherHuman));
+        assertFalse(note.isNameWritten(TestDeathNote.anotherHuman));
         //verify that the empty string has not been written in the notebook
-        assertFalse(note.isNameWritten(EMPTY_STRING));
+        assertFalse(note.isNameWritten(TestDeathNote.EMPTY_STRING));
 
     }
 
@@ -94,19 +94,19 @@ class TestDeathNote {
         }
         finally{
             //write the name of a human in the notebook
-            note.writeName(humanName);
+            note.writeName(TestDeathNote.humanName);
             //verify that the cause of death is a heart attack
             note.writeDeathCause("hearth attack");
             //write the name of another human in the notebook
-            note.writeName(anotherHuman);
+            note.writeName(TestDeathNote.anotherHuman);
             //set the cause of death to "karting accident"
             note.writeDeathCause("karting accident");
             //verify that the cause of death has been set correctly 
             assertTrue(note.writeDeathCause("karting accident"));
-            assertEquals("karting accident", note.getDeathCause(anotherHuman));
+            assertEquals("karting accident", note.getDeathCause(TestDeathNote.anotherHuman));
             Thread.sleep(100);
             note.writeDeathCause("different cause");
-            assertEquals("karting accident", note.getDeathCause(anotherHuman));
+            assertEquals("karting accident", note.getDeathCause(TestDeathNote.anotherHuman));
 
         }
     }
@@ -127,22 +127,22 @@ class TestDeathNote {
         }
         finally{
                //write the name of a human in the notebook
-               note.writeName(humanName);
+               note.writeName(TestDeathNote.humanName);
                //verify that the details of the death are currently empty
-               assertTrue(note.getDeathDetails(humanName).isEmpty());
+               assertTrue(note.getDeathDetails(TestDeathNote.humanName).isEmpty());
                //set the details of the death to "ran for too long"
                boolean res = note.writeDetails("ran for too long");
                //verify that death details have been set correctly (returned true, and the details are indeed "ran for too long")
                assertTrue(res);
-               assertEquals("ran for too long", note.getDeathDetails(humanName));
+               assertEquals("ran for too long", note.getDeathDetails(TestDeathNote.humanName));
                // write the name of another human in the notebook
-               note.writeName(anotherHuman);
+               note.writeName(TestDeathNote.anotherHuman);
                //sleep for 6100ms
                Thread.sleep(6100);
                //try to change the details
                //verify that the details have not been changed
                note.writeDetails("other details");
-               assertEquals("", note.getDeathDetails(anotherHuman));
+               assertEquals("", note.getDeathDetails(TestDeathNote.anotherHuman));
 
         }
 
