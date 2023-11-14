@@ -33,9 +33,11 @@ class TestDeathNote {
     @Test
     public void testExceptionAndMessages() {
         try {
+            note.getRule(0);
             note.getRule(-4);
             fail();
         } catch (IllegalArgumentException e) {
+            //check that the exceptions are thrown correctly, that their type is the expected one, and that the message is not null, empty, or blank.
             assertEquals("arguments out of bounds", e.getMessage());
             assertNotNull(e.getMessage());
             assertFalse(e.getMessage().isEmpty());
@@ -45,14 +47,18 @@ class TestDeathNote {
 
     
     /**
-     * for all the valid rules, check that none is null or blank
+     *  No rule is empty or null in the DeathNote rules
      */
     @Test
     public void testRules(){
-        String resString = note.getRule(5);
-        assertNotNull(resString);
-        assertFalse(resString.isEmpty());
-        assertFalse(resString.isBlank());
+        //for all the valid rules, check that none is null or blank    
+        for (int i = 2; i <= DeathNote.RULES.size(); i++) {
+            String resString = note.getRule(i);
+            assertNotNull(resString);
+            assertFalse(resString.isEmpty());
+            assertFalse(resString.isBlank());
+        } 
+       
     }
 
     /**
@@ -132,7 +138,7 @@ class TestDeathNote {
                // write the name of another human in the notebook
                note.writeName(anotherHuman);
                //sleep for 6100ms
-               Thread.sleep(6040);
+               Thread.sleep(6100);
                //try to change the details
                //verify that the details have not been changed
                note.writeDetails("other details");

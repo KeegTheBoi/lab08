@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static it.unibo.bank.impl.SimpleBankAccount.*;
-import static it.unibo.bank.impl.SimpleBankAccount.ATM_TRANSACTION_FEE;
-import static it.unibo.bank.impl.StrictBankAccount.TRANSACTION_FEE;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestStrictBankAccount {
